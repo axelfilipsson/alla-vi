@@ -1,7 +1,10 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { Network } from "vis-network/standalone";
+import About from "./text-content";
+import { text } from "stream/consumers";
+import ImageContent from "./image-content";
+import TextContent from "./text-content";
 
 export default function Home() {
   return (
@@ -14,29 +17,74 @@ export default function Home() {
 }
 
 const NetworkGraph = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [textContent, setTextContent] = useState("");
+  const [imageContent, setImageContent] = useState<string[]>([]);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
     const nodes = [
-      { id: 1, label: "Node 1" },
-      { id: 2, label: "Node 2" },
-      { id: 3, label: "Node 3" },
-      { id: 4, label: "Node 4" },
-      { id: 5, label: "Content node 1", type: "content-node" },
-      { id: 6, label: "Content node 2", type: "content-node" },
+      { id: 1, label: "ALLA VI" },
+      { id: 2, label: "Info" },
+      {
+        id: 3,
+        label: "Bilder",
+        type: "image-content",
+        imageContent:
+          ["IMG_6085.JPG", "IMG_6164.JPG", "IMG_6289.JPG", "IMG_6298.JPG"],
+      },
+      { id: 4, label: "Musik" },
+      { id: 5, label: "Kontakt" },
+      {
+        id: 6,
+        label: "Spotify",
+        link: "https://open.spotify.com/artist/09U2Ob20upnckziSBhJrnU?si=HiallKtdQRu2SMHi4401zA",
+      },
+      {
+        id: 7,
+        label: "Youtube",
+        link: "https://youtube.com/@allavisomgormusik?si=UX38DNjCKBAzIZEw",
+      },
+      {
+        id: 8,
+        label: "Soundcloud",
+        link: "https://soundcloud.com/allavimusic",
+      },
+      { id: 9, label: "Mail", link: "mailto:allavi.music@gmail.com" },
+      {
+        id: 10,
+        label: "Facebook",
+        link: "https://www.facebook.com/allavi.music",
+      },
+      {
+        id: 11,
+        label: "Instagram",
+        link: "https://www.instagram.com/allavi.music/",
+      },
+      {
+        id: 12,
+        label: "Om oss",
+        type: "text-content",
+        textContent:
+          "Hej! Vi är ett band som har existerat i olika konstellationer under de senaste åren. I vår nuvarande uppsättning hämtar vi inspiration från genrer som krautrock, DnB samt klassisk gubbrock. Från och med 2025 släpper vi musik regelbundet och kommer framför allt fokusera på köra många roliga live-gig!",
+      },
     ];
 
     const edges = [
       { from: 1, to: 2 },
-      { from: 1, to: 3 },
+      { from: 1, to: 4 },
       { from: 1, to: 5 },
-      { from: 2, to: 4 },
-      { from: 2, to: 6 },
+      { from: 2, to: 3 },
+      { from: 2, to: 12 },
+      { from: 4, to: 6 },
+      { from: 4, to: 7 },
+      { from: 4, to: 8 },
+      { from: 5, to: 9 },
+      { from: 5, to: 10 },
+      { from: 5, to: 11 },
     ];
-
     const data = {
       nodes: nodes,
       edges: edges,
@@ -44,24 +92,29 @@ const NetworkGraph = () => {
 
     const options = {
       nodes: {
-        shape: "dot",
+        shape: "circle",
         size: 20,
+        margin: { top: 10, right: 10, bottom: 10, left: 10 },
         color: {
           background: "#ffffff",
-          border: "#040404",
+          border: "#ffffff",
           highlight: {
-            background: "#000000",
-            border: "#000000",
+            border: "#ffffff",
+            background: "#ffffff",
           },
         },
         font: {
           color: "#000000",
+          face: "Arial",
+          size: 16,
+          align: "center",
+          vadjust: 0,
         },
       },
       edges: {
         color: {
-          color: "#000000",
-          highlight: "#000000",
+          color: "#ffffff",
+          highlight: "#ffffff",
           hover: "#000000",
         },
       },
@@ -82,11 +135,10 @@ const NetworkGraph = () => {
     });
 
     network.on("selectNode", (params) => {
-      if (params.nodes.length > 0 ) {
+      if (params.nodes.length > 0) {
         const nodeId = params.nodes[0];
         const nodeData = nodes.find((node) => node.id === nodeId);
 
-    
         network.focus(nodeId, {
           scale: 1,
           animation: {
@@ -95,12 +147,19 @@ const NetworkGraph = () => {
           },
         });
 
-        if (nodeData?.type === "content-node") {
-          setSelectedNode(nodeId); 
-          console.log("Selected node label:", nodeData.label);
+        if (nodeData?.link?.length) {
+          window.open(nodeData.link, "_blank");
+          return;
+        }
+
+        if (nodeData?.type === "text-content") {
+          setTextContent(nodeData?.textContent ?? "");
+          setSelectedNode(nodeId);
+        } else if (nodeData?.type === "image-content") {
+          setImageContent(nodeData?.imageContent ?? []);
+          setSelectedNode(nodeId);
         } else {
-          console.log("close node")
-          setSelectedNode(null); 
+          setSelectedNode(null);
         }
       }
     });
@@ -110,42 +169,14 @@ const NetworkGraph = () => {
     };
   }, []);
 
+
   return (
     <div ref={containerRef} style={{ height: "100%", width: "100%" }}>
-      {selectedNode && (
-        <div
-          className="fixed inset-0 bg-transparent flex items-center justify-center z-50 m-2"
-        
-        >
-          <div
-            className="relative bg-black text-white rounded-2xl p-8 max-w-4xl w-full max-w-[50vh] max-h-[200vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="grid grid-cols-2 gap-6">
-              <div className="flex flex-col items-start">
-                <h2 className="text-3xl font-bold mb-4">Node 1</h2>
-                <Image
-                  src="/images/image-1.jpg"
-                  alt="Next.js logo"
-                  width={180}
-                  height={80}
-                  priority
-                />
-              </div>
-              <div className="flex flex-col items-end">
-                <button
-                  onClick={() => setSelectedNode(null)}
-                  className="mb-4 bg-white px-4 py-2 text-black rounded-lg hover:bg-gray-800"
-                >
-                  Close
-                </button>
-                <p className="text-lg text-right">
-                  Mer info om denna node kan fyllas på här.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      {selectedNode && textContent && (
+        <TextContent setTextContent={setTextContent} setSelectedNode={setSelectedNode} content={textContent} />
+      )}
+      {selectedNode && imageContent.length > 0 && (
+        <ImageContent setImageContent={setImageContent} setSelectedNode={setSelectedNode} content={imageContent} />
       )}
     </div>
   );
