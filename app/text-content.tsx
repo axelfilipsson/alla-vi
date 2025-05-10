@@ -1,8 +1,8 @@
 import React from "react";
 
 interface AboutProps {
-  setTextContent: React.Dispatch<React.SetStateAction<any>>;
-  setSelectedNode: React.Dispatch<React.SetStateAction<any>>;
+  setTextContent: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedNode: React.Dispatch<React.SetStateAction<number | null>>;
   content: string;
 }
 const TextContent: React.FC<AboutProps> = ({ setTextContent, setSelectedNode, content }) => {

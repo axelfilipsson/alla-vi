@@ -2,8 +2,8 @@ import React from "react";
 import Image from "next/image";
 
 interface AboutProps {
-  setImageContent: React.Dispatch<React.SetStateAction<any>>;
-  setSelectedNode: React.Dispatch<React.SetStateAction<any>>;
+  setImageContent: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedNode: React.Dispatch<React.SetStateAction<number | null>>;
   content: string[];
 }
 const About: React.FC<AboutProps> = ({ setImageContent, setSelectedNode, content }) => {

@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Network } from "vis-network/standalone";
-import About from "./text-content";
-import { text } from "stream/consumers";
 import ImageContent from "./image-content";
 import TextContent from "./text-content";
 
@@ -18,8 +16,8 @@ export default function Home() {
 
 const NetworkGraph = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [selectedNode, setSelectedNode] = useState(null);
-  const [textContent, setTextContent] = useState("");
+  const [selectedNode, setSelectedNode] = useState<number | null>(null);
+  const [textContent, setTextContent] = useState<string>("");
   const [imageContent, setImageContent] = useState<string[]>([]);
 
   useEffect(() => {
