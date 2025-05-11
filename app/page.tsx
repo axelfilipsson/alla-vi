@@ -67,7 +67,7 @@ const NetworkGraph = () => {
         type: "text-content",
         textContent:
           "Hej! Vi är ett band som har existerat i olika konstellationer under de senaste åren. I vår nuvarande uppsättning hämtar vi inspiration från genrer som krautrock, DnB samt klassisk gubbrock. Från och med 2025 släpper vi musik regelbundet och kommer framför allt fokusera på köra många roliga live-gig!",
-      },
+      }
     ];
 
     const edges = [
@@ -123,7 +123,7 @@ const NetworkGraph = () => {
 
     network.once("stabilizationIterationsDone", () => {
       network.focus(1, {
-        scale: 1,
+        scale: 0.5,
         animation: {
           duration: 500,
           easingFunction: "easeInOutQuad",
