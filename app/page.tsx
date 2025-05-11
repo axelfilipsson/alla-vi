@@ -43,23 +43,23 @@ const NetworkGraph = () => {
       {
         id: 7,
         label: "Youtube",
-        link: "https://youtube.com/@allavisomgormusik?si=UX38DNjCKBAzIZEw",
+        link: "https://youtube.com/@allavisomspelarmusik?si=UX38DNjCKBAzIZEw",
       },
       {
         id: 8,
         label: "Soundcloud",
-        link: "https://soundcloud.com/allavimusic",
+        link: "https://soundcloud.com/allavisomspelarmusik",
       },
       { id: 9, label: "Mail", link: "mailto:allavi.music@gmail.com" },
       {
         id: 10,
         label: "Facebook",
-        link: "https://www.facebook.com/allavi.music",
+        link: "https://www.facebook.com/allavisomspelarmusik/",
       },
       {
         id: 11,
         label: "Instagram",
-        link: "https://www.instagram.com/allavi.music/",
+        link: "https://www.instagram.com/allavisomspelarmusik/",
       },
       {
         id: 12,
